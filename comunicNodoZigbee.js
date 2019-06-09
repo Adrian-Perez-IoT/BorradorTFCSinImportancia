@@ -1,26 +1,18 @@
-const express = require('express');
-const app = express();
-const port = 4000;
+//Las funciones principales que estaran en este programa "comunicacNodoZigbee.js" son:
+//lecturaPermanenteDeTramas()
+//IdentificacionDelTipoDeTrama()
+//EnvioDeTramaAlRouter() -->Esto puede servir para consultar el NI Router, como asi tambien para reconfigurar sus lineas de DIO como digitalInput, resistencia pull-up / pull-down, etc
 
-greeting = "\n hola mundo desde Express JS \n";
-app.get('/', (req, res) => {
-    //res.send("Mira mamá mi hola mundo desde Express Js =P");
-    res.send();
-})
-app.listen(port, (req, res) => {
-    console.log(greeting);
-    console.log(`Listen in port ${port}`);
+/* Sector para la lectura de los frame de los nodos Zigbee */
+
+var SerialPort = require('serialport'); // hago uso de la libreria serialport para acceder a los bits transmitidos por el puerto USB de la Notebook
+var xbee_api = require('xbee-api'); // libreria para facilitar la gestion (leer y escribir tramas) de los nodos zigbee
+
+var C = xbee_api.constants; //contiene los ctipos de trama representados en una constante (para no utilizar los simbolos hexadecimales) como por ejemplo "NI" para saber el nombre identificador del nodo.
+// Para obtener una instancia xbeeAPI de la clase XBeeAPI
+var xbeeAPI = new xbee_api.XBeeAPI({
+    api_mode: 1 //1 es predeterminado, 2 es con escape.
 });
-
-
-
-/* Sector para la lectura de frame en el backend */
-
-var SerialPort = require('serialport');
-var xbee_api = require('xbee-api');
-
-var C = xbee_api.constants;
-var xbeeAPI = new xbee_api.XBeeAPI();
 
 var puerto = "/dev/ttyUSB0"; // buscar la manera de identificar en que puerto USB esta conectado el adaptador, a veces es USB1 otras veces es USB0
 var serialport = new SerialPort(puerto, {
@@ -43,6 +35,11 @@ serialport.on("open", function() {
     xbeeAPI.builder.write(frame_obj);
 });
 
+function mostrarTramas() {
+    console.log("hola desde mi funcion mostrarTrama");
+
+}
+
 // All frames parsed by the XBee will be emitted here
 xbeeAPI.parser.on("data", function(frame) {
     if (frame.type == 136) { // nos sercioramos que el comando sea NI para mostrar el nombre del nodo zigbee        
@@ -54,35 +51,6 @@ xbeeAPI.parser.on("data", function(frame) {
         }
     }
 });
-
-
-
-
-/* Sector para la programacion del servidor backend comunicandose con firebase */
-
-var admin = require('firebase-admin');
-// Fetch the service account key JSON file contents
-var serviceAccount = require('/home/bandydos/BackendIoT/serviceAccountKey.json'); // cmbiar la ruta por otra que sea relativa a la del proyecto
-
-// Initialize the app with a service account, granting admin privileges
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: 'https://backend-de7e2.firebaseio.com'
-});
-
-// As an admin, the app has access to read and write all data, regardless of Security Rules
-var db = admin.database(); // Get a reference to the database service
-var ref = db.ref("Evento");
-ref.once("value", function(snapshot) {
-    console.log("############# El contenido completo de mi base de dato es:");
-    console.log(snapshot.val());
-});
-
-
-
-
-
-
 
 
 
@@ -117,3 +85,7 @@ var raw_frame = Buffer.from([0x7E, 0x00, 0x12, 0x92, 0x00, 0x13, 0xA2, 0x00, 0x4
 //console.log("Los datos crudos son:", xbeeAPI.parseFrame(raw_frame).commandData);
 
 //console.log("Analiza los datos en el buffer:", xbeeAPI.parseRaw(raw_frame));
+
+
+// coregir para que pueda acceder a las variables y funciones de este archivo, en app.js  que contiene la logica de negocio. 
+module.exports = { mostrarTramas };

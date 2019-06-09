@@ -1,17 +1,32 @@
-<<!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
 
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Administracion del Servidor Backend IoT</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-        <script src="main.js"></script>
-    </head>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Mostrar las funcionalidades que brinda mi Servidor Backend IoT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" /> -->
 
-    <body>
+</head>
 
-    </body>
+<body>
+    <div class="container">
+        <!-- Contenendor para mostrar los datos leidos -->
+        <div id="result">
+            <!-- Creamos una tabla para visualizar los datos nuevos -->
+            <p id="demo"></p>
 
-    </html>
+
+        </div>
+        <!-- Boton para agregar datos simulados -->
+        <input type="button" id="btn" value="Agregar">
+    </div>
+
+    <script src="./app.js"></script>
+    <script>
+        document.getElementById("demo").innerHTML = "Hello World!";
+    </script>
+</body>
+
+</html>
