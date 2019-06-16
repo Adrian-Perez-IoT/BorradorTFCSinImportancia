@@ -1,3 +1,4 @@
+//comunicacion serial con la red WPAN
 //Las funciones principales que estaran en este programa "comunicacNodoZigbee.js" son:
 //lecturaPermanenteDeTramas()
 //IdentificacionDelTipoDeTrama()
@@ -36,25 +37,36 @@ serialport.on("open", function() {
 });
 
 function mostrarTramas() {
-    console.log("hola desde mi funcion mostrarTrama");
-
+    // All frames parsed by the XBee will be emitted here
+    xbeeAPI.parser.on("data", function(frame) {
+        console.log("\n============================================");
+        console.log(" Tramas capturada en mi puerto serial:");
+        console.log(frame);
+        if (frame.type == 136) { // nos sercioramos que el comando sea NI para mostrar el nombre del nodo zigbee        
+            console.log("El backend se encuentra conectado fisicamente al nodo Zigbee con nombre:", frame.commandData.toString('ascii'));
+        } else {
+            if (JSON.stringify(frame.digitalSamples) == '{"DIO0":1}') {
+                console.log("¡¡¡¡¡¡ < < < ALERTA > > > !!!!!!!\nSe detecto un evento del tipo MOVIMIENTO en la zona _ _ _ _ _. \n Se registrará la fecha y hora en la Reltime Database");
+            }
+        }
+    });
 }
 
-// All frames parsed by the XBee will be emitted here
-xbeeAPI.parser.on("data", function(frame) {
-    if (frame.type == 136) { // nos sercioramos que el comando sea NI para mostrar el nombre del nodo zigbee        
-        console.log("El backend esta correctamente conectado al nodo Zigbee Coordinador con nombre:", frame.commandData.toString('ascii'));
-    } else {
-        console.log("El frame numero _ _ _ caputardo en el puerto serial contiene los siguientes datos:", frame)
-        if (JSON.stringify(frame.digitalSamples) == '{"DIO0":1}') {
-            console.log("Se detecto evento de movimientos en la zona, se subira la fecha y hora al Reltime Database");
-        }
+
+function simularTramas() {
+    var raw_frame = Buffer.from([0x7E, 0x00, 0x12, 0x92, 0x00, 0x13, 0xA2, 0x00, 0x41, 0x6D, 0x73, 0xAF, 0xF9, 0x51, 0x01, 0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x9A]);
+    //return JSON.stringify(xbeeAPI.parseFrame(raw_frame));
+    return xbeeAPI.parseFrame(raw_frame);
+}
+
+
+function procesarDatos(mytrama) {
+    //console.log("asdflasdflasldf", mytrama);
+    if (JSON.stringify(mytrama.digitalSamples) == '{"DIO0":1}') {
+        //console.log("¡¡¡¡¡¡ < < < ALERTA > > > !!!!!!!\nSe detecto un evento del tipo MOVIMIENTO en la zona _ _ _ _ _. \n Se registrará la fecha y hora en la Reltime Database");
+        return 'positivo';
     }
-});
-
-
-
-
+}
 // Something we might want to send to an XBee...  -  Esto es un frame que podriamos enviar a algun XBee
 var frame_obj = {
     type: C.FRAME_TYPE.AT_COMMAND,
@@ -87,5 +99,7 @@ var raw_frame = Buffer.from([0x7E, 0x00, 0x12, 0x92, 0x00, 0x13, 0xA2, 0x00, 0x4
 //console.log("Analiza los datos en el buffer:", xbeeAPI.parseRaw(raw_frame));
 
 
-// coregir para que pueda acceder a las variables y funciones de este archivo, en app.js  que contiene la logica de negocio. 
-module.exports = { mostrarTramas };
+// agregar los argumentos para que pueda acceder a las variables de este archivo, en server.js  que contiene la logica general de negocio. 
+module.exports = { mostrarTramas, simularTramas, procesarDatos };
+//exports.mostrarTramas = mostrarTramas;
+//module.exports = xbeeAPI;

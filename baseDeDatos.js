@@ -12,13 +12,35 @@ admin.initializeApp({
 var db = admin.database();
 var ref = db.ref("Evento");
 
-function mostrarTodaBD() {
-    console.log("hola desde mi funcion mostrarTodaBD");
+function mostrarBD() {
     ref.once("value", function(snapshot) {
         console.log("++++++++++++++++++++++++++++++++++++");
-        console.log(" El contenido completo de mi base de dato es:");
+        console.log(" El contenido de mi base de dato es:");
         console.log(snapshot.val());
+        console.log("++++++++++++++++++++++++++++++++++++");
+    });
+
+}
+
+//crud
+function crear() {
+    var userRef = ref.child("users");
+    userRef.set({
+        asdfasdfalanisawarome: {
+            dateOfBirth: "asdfasdfasdfJune 23, 1912",
+            nombre: "asdfasdfdsfAlan Turing"
+        },
+        asdfasdfgracehop: {
+            nacimiento: "asdfasdffdaDiciembre 9 , 1906",
+            nombre: "asdafdsfasGrace Hopper"
+        }
     });
 }
 
-module.exports = { mostrarTodaBD };
+function leer() {}
+
+function actualizar() {}
+
+function borrar() {}
+
+module.exports = { mostrarBD, crear, leer, actualizar, borrar };
