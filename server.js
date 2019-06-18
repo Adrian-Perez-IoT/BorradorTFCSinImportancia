@@ -17,9 +17,9 @@ La comunicandose con firebase es privilegiada utilizando un archivo .json y se h
 /* Definiremos las funciones y procedimientos fundamentales de la logica de negocio que brindara el servidor backend */
 
 //importo las funciones de otro programa (database.js)
-const bd = require('./baseDeDatos');
+const bd = require('./config/database');
 //const coordinador = require('./comunicNodoZigbee');
-const coordinador = require('./comunicNodoZigbee');
+const coordinador = require('./helpers/comunicNodoZigbee');
 //import { mostrarTramas } from './comunicNodoZigbee';
 
 const express = require('express');
@@ -38,16 +38,7 @@ var myobj = coordinador.simularTramas();
 console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ \n Objetos:");
 console.log(myobj);
 
-// Utilizo express para gestionar las peticiones al servidor backend
-app.get('/', (req, res) => {
-    //res.json({ user: 'adrian' });
-    res.send("esta respuesta envio el servidor al cliente frontend");
-    res.send();
-})
 
-app.listen(port, (req, res) => {
-    console.log(`Listen in port ${port}`);
-});
 
 // Cuando el servidor backend reciba una peticion con la ruta a la raiz, le envio la vista de pagina home de mi "Solucion IoT - SmartHome"
 // Además se verificara si el usuario inicio sesion, en caso contrario se le mostrará un "___boton___" de inicio de sesion
@@ -126,11 +117,21 @@ app.get('/start', (req, res) => {
     if (estado = "positivo") {
         console.log("se detecto una amenaza");
         //creo un nuevo registro en mi realtime database
-        //bd.crear();
-        console.log("supuestmente ya se agrego un nuevo hijo a la bd, en la tabla EVENTOS");
+        //bd.registroIntruso();
+        console.log("supuestmente ya se agrego un nuevo hijo a la bd, en la tabla INTRUSOS");
     }
-    //console.log("Recibi una nueva peticion al PATH: /start \n");
     res.send(mytrama);
     //res.json(loquerecibi);
+
+})
+
+// Utilizo express para gestionar las peticiones al servidor backend
+app.get('/', (req, res) => {
+    //res.json({ user: 'adrian' });
+    res.send("esta respuesta envio el servidor al cliente frontend");
     res.send();
 })
+
+app.listen(port, (req, res) => {
+    console.log(`Listen in port ${port}`);
+});

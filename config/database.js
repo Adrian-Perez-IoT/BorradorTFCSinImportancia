@@ -10,7 +10,10 @@ admin.initializeApp({
 });
 
 var db = admin.database();
-var ref = db.ref("Evento");
+//obtenemos una referencia al ¿Esquema? Evento
+//var ref = db.ref("Evento");
+var ref = db.ref();
+
 
 function mostrarBD() {
     ref.once("value", function(snapshot) {
