@@ -15,6 +15,7 @@
 /* Sector para la programacion de las funcionalidades fundamentales del servidor backend.  
 La comunicandose con firebase es privilegiada utilizando un archivo .json y se hace desde el archivo baseDeDatos.js  */
 /* Definiremos las funciones y procedimientos fundamentales de la logica de negocio que brindara el servidor backend */
+//hizimos un git pull para recuperar el codigo de la nube y AUTOMATICAMENTE intenta unir con el codigo con el que estoy trabajando localmente...
 
 //importo las funciones de otro programa (database.js)
 const bd = require('./config/database');
