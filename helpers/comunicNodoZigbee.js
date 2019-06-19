@@ -62,9 +62,11 @@ function simularTramas() {
 
 function procesarDatos(mytrama) {
     //console.log("asdflasdflasldf", mytrama);
-    if (JSON.stringify(mytrama.digitalSamples) == '{"DIO0":1}') {
+    if (JSON.stringify(mytrama.digitalSamples) === '{"DIO0":1}') {
         //console.log("¡¡¡¡¡¡ < < < ALERTA > > > !!!!!!!\nSe detecto un evento del tipo MOVIMIENTO en la zona _ _ _ _ _. \n Se registrará la fecha y hora en la Reltime Database");
-        return 'positivo';
+        return 'intrusoPIR';
+        //return 'gas';
+        //return 'intrusoMagnetico';
     }
 }
 // Something we might want to send to an XBee...  -  Esto es un frame que podriamos enviar a algun XBee

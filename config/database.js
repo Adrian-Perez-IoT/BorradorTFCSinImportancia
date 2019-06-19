@@ -9,9 +9,17 @@ admin.initializeApp({
     databaseURL: 'https://backend-de7e2.firebaseio.com'
 });
 
-var db = admin.database();
+
+// Get a database reference to our blog
+const db = admin.database();
+
+function obtenerReferencia(esquema) {
+    return db.ref(esquema);
+
+}
 //obtenemos una referencia al ¿Esquema? Evento
 //var ref = db.ref("Evento");
+//obtengo una referencia a la raiz de mi base de datos
 var ref = db.ref();
 
 
@@ -46,4 +54,5 @@ function actualizar() {}
 
 function borrar() {}
 
-module.exports = { mostrarBD, crear, leer, actualizar, borrar };
+module.exports = { mostrarBD, crear, leer, actualizar, borrar, obtenerReferencia };
+//module.exports = { db };
