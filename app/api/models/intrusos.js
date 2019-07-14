@@ -3,9 +3,8 @@ const db = require('../../../config/database');
 
 //var refIntrusos = db.ref("Intruso");
 
-
 function writeData(timestamp, evento) {
-    //obtengo una referencia al esquema Intruso y le adiciono como clave primaria un timestamp
+    //obtengo una referencia a la tabla Intruso y le adiciono como clave primaria un timestamp
     var intrusosRef = db.obtenerReferencia('Intruso/' + timestamp);
     //variables auxiliares
     var d = new Date();
@@ -17,7 +16,8 @@ function writeData(timestamp, evento) {
     var minuto = d.getMinutes();
     var segundo = d.getSeconds();
     var conc2 = hora + ":" + minuto + ":" + segundo;
-    //seteo los propiedades relevantes de la entidad 
+
+    //seteo los propiedades relevantes de la Entidad Intrusos 
     intrusosRef.set({
         fecha: concateno, //luego cambiar con una estructura mas adecuada que permita realizar operaciones de obtencion de intervalo de fechas
         hora: conc2,

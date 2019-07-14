@@ -64,7 +64,7 @@ function procesarDatos(mytrama) {
     //console.log("asdflasdflasldf", mytrama);
     if (JSON.stringify(mytrama.digitalSamples) === '{"DIO0":1}') {
         //console.log("¡¡¡¡¡¡ < < < ALERTA > > > !!!!!!!\nSe detecto un evento del tipo MOVIMIENTO en la zona _ _ _ _ _. \n Se registrará la fecha y hora en la Reltime Database");
-        return 'intrusoPIR';
+        return 'movimientoPIR';
         //return 'gas';
         //return 'intrusoMagnetico';
     }
