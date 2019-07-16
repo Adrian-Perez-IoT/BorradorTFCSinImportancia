@@ -18,10 +18,10 @@ La comunicandose con firebase es privilegiada utilizando un archivo .json y se h
 //hizimos un git pull para recuperar el codigo de la nube y AUTOMATICAMENTE intenta unir con el codigo con el que estoy trabajando localmente...
 
 //importo las funciones de otro programa (database.js)
+
 const db = require('./config/database');
-//const coordinador = require('./comunicNodoZigbee');
+
 const coordinador = require('./helpers/comunicNodoZigbee');
-//import { mostrarTramas } from './comunicNodoZigbee';
 
 const express = require('express');
 const app = express();
@@ -46,7 +46,7 @@ console.log(myobj);
 
 // Utilizo express para gestionar las peticiones al servidor backend
 
-/* RUTAS RELATIVAS DE LA LOGICA NAVEGACION*/
+/* RUTAS RELATIVAS DE LA LOGICA DE NAVEGACION*/
 
 // Cuando el servidor backend reciba una peticion con la ruta a la raiz, le envio la vista de pagina home de mi "Solucion IoT - SmartHome" donde el administrador tendra la opcion de loguearse
 // Antes de loguearse, se debe  verificar si el usuario no habia inicio sesion anteriormente.  en caso contrario se le mostrará un "___boton___" de inicio de sesion

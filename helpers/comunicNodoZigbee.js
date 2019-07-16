@@ -1,7 +1,7 @@
-//comunicacion serial con la red WPAN
-//Las funciones principales que estaran en este programa "comunicacNodoZigbee.js" son:
-//lecturaPermanenteDeTramas()
-//IdentificacionDelTipoDeTrama()
+//comunicacion serial con el nodo zoordinador, y a traves de él a la WPAN
+//Las funciones principales que estarán en este programa "comunicacNodoZigbee.js" son:
+//identificTipoDeTrama()
+//lecturaDeTramas() --> Esta funcion me traduce las propiedades mas relevantes de una trama.  Por ejemplo: si el pin 20 fue activado por un sensor
 //EnvioDeTramaAlRouter() -->Esto puede servir para consultar el NI Router, como asi tambien para reconfigurar sus lineas de DIO como digitalInput, resistencia pull-up / pull-down, etc
 
 /* Sector para la lectura de los frame de los nodos Zigbee */
@@ -21,10 +21,9 @@ var serialport = new SerialPort(puerto, {
     dataBits: 8,
     stopBits: 1,
     parity: 'none',
-    //parser: com.parsers.Readline();
 });
 
-serialport.pipe(xbeeAPI.parser);
+serialport.pipe(xbeeAPI.parser); //¿que hace esta funcion?
 xbeeAPI.builder.pipe(serialport);
 
 serialport.on("open", function() {
@@ -42,8 +41,8 @@ function mostrarTramas() {
         console.log("\n============================================");
         console.log(" Tramas capturada en mi puerto serial:");
         console.log(frame);
-        if (frame.type == 136) { // nos sercioramos que el comando sea NI para mostrar el nombre del nodo zigbee        
-            console.log("El backend se encuentra conectado fisicamente al nodo Zigbee con nombre:", frame.commandData.toString('ascii'));
+        if (frame.type == 136) { // si la trama es: "NI", mostramos el nombre del nodo zigbee        
+            console.log("El servidor backend app se encuentra conectado fisicamente al Nodo Zigbee con nombre:", frame.commandData.toString('ascii'));
         } else {
             if (JSON.stringify(frame.digitalSamples) == '{"DIO0":1}') {
                 console.log("¡¡¡¡¡¡ < < < ALERTA > > > !!!!!!!\nSe detecto un evento del tipo MOVIMIENTO en la zona _ _ _ _ _. \n Se registrará la fecha y hora en la Reltime Database");
