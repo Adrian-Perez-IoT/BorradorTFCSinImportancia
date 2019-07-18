@@ -56,7 +56,7 @@ app.use(routes);
 app.use('/api', routesApi); // esto es solo un ejemplo.  Partiendo de aqui podemos rutear las APLICACIONES basicas de mi servidor (API), esto es: /USUARIO, /POST, /CONFIGURACION, etc 
 
 
-/** Desglosaremos la siguiente ruta de funcionalidad (que se creo a modo de prueba) en componentes mas pequeños, que tengan funciones entendibles y manejables. 
+/** Desglosaremos la siguiente ruta de funcionalidad /monitorear (que se creo para probar las herramientas) en componentes mas pequeños, que contengan funciones con nombres descriptivos, entendibles y manejables. 
  *  Las entidades y funciones descubiertas en el desglose son:
  *      Entidad: MONITOR. 
  *      Propiedades: intervalo de tiempo de funcionamiento, ¿sensores a funcionar asociados a la propiedad anterior de intervalo de tiempo?.  Trama? 
