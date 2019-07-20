@@ -19,7 +19,18 @@ router.get('/login', (req, res) => {
     res.render('login.ejs');
 });
 
-//ruta al panel de administracion.  
+//ruta al panel de ¿Funcionalidades? donde podre manualmente empezar/detener el monitoreo(procesamiento de datos) y generar informes
+router.get('/tools', (req, res) => {
+    // res.send("en es ta pestaña (SPA) debo poner formularios, botonos y todos lo necesario para que el usario final pueda empezar/detener el monitoreo.  Y además generar informes de eventos");
+    res.render('tools.ejs');
+}); //¿Me convendria poner un archivo router-tools.js ?
+
+
+//ruta al panel que permite administrar la configuracion de INTERVALOS DE TIEMPO y CRUD USUARIOS. 
+router.get('/configuracion', (req, res) => {
+    res.res("estoy en la pestaña donde el Administrador puede configurar el intervalo de tiempo de funcionamiento del sistema y CRUD de usuarios");
+});
+
 //ruta al monitoreo en tiempo real.
 //ruta a la generacion de informes.
 

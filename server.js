@@ -51,6 +51,14 @@ function validateUser(req, res, next) {
 
 }
 
+//para servir mi carpeta publica (style bootstrap e imagenes)
+// app.use(express.static('public'));
+// app.use(express.static(__dirname + "/public"));
+// app.use(express.static(__dirname + "/public"));
+app.use(express.static('public'));
+
+
+
 /* rutas */
 app.use(routes);
 app.use('/api', routesApi); // esto es solo un ejemplo.  Partiendo de aqui podemos rutear las APLICACIONES basicas de mi servidor (API), esto es: /USUARIO, /POST, /CONFIGURACION, etc 
@@ -81,10 +89,11 @@ app.use('/api', routesApi); // esto es solo un ejemplo.  Partiendo de aqui podem
 
 
 
-// Cuando el servidor backend reciba una peticion con la ruta a "http:localhost:4000/start" se llamará a una funcion que 
+// Cuando el servidor backend reciba una peticion con la ruta a "http:localhost:4000/tools" se mostrará un tablero que ofrece las herramientas que el usuario (administrador) puede usar.
+// Habrá una herramienta llamada "monitoreo permanente" que llamará a una funcion que 
 // en un bucle infinito (o hasta que se de la orden de break) monitoree constantemente las tramas recibidas por el puerto serial. 
 //  y en caso de encontrar un sensor activo, esté llamará a la "RUTA QUE NOTIFICA"
-app.get('/monitorear', (req, res) => {
+app.get('/tools', (req, res) => {
     var mytrama = coordinador.simularTramas(); // luego reemplazar esta funcion por la funcion que me obtiene tramas REALES constantemente desde mi puerto USB de la notebook
     var evento = coordinador.procesarDatos(mytrama); // envio la trama a una funcion para que procese si se debe o no debe activar la alarma 
     // si se detecto un evento de peligro entonces envio una notificacion al cliente.
