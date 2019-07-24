@@ -1,7 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-// Utilizo express para gestionar las peticiones al servidor backend
+// /*==* SETTINGS ------- ELIMINAR ESTE BLOQUE PORQUE NO TIENE SENTIDO*==*/
+
+// // utilizando mi motor de plantillas: EJS
+// const app = express();
+// app.set('views', __dirname + '/views');
+// app.set('view engine', 'ejs');
+// // console.log(__dirname); // PARA SABER EL DIRECTORIO DONDE ESTA MI PROYECTO
+
 
 /* RUTAS ¡GENERALES! */
 
@@ -10,8 +17,13 @@ const router = express.Router();
 // NOTA: luego de hacer click en el boton "LOGIN", el servidor llama a la ruta https:localhost:4000/login la cual contendrá un formulario de inicio de sesion.  Luego de loguearse correctamente, se
 // llamará otra vista que contendra los datos del usuario logueado y un boton de "start system" que permitirá inicar el sistema de alarma.
 router.get('/', (req, res) => {
-    // res.send("Aqui el backend app le envia a la app cliente el .html con: la vista HOME que describe mi 'Solición IoT'.  Tambien hay un boton de Login para que el administrador (osea el dueño de la casa) inicie sesion y comienze a funconar el sistema de alarma");
-    res.render('index.ejs');
+    // res.send("Aqui el backend app le envia al navegador web cliente el .html con: la vista HOME que describe mi 'Solición IoT'.  Tambien hay un boton de Login para que el administrador (osea el dueño de la casa) inicie sesion y comienze a funconar el sistema de alarma");
+    // res.render('indio.ejs');
+    res.render('./pages/index.ejs');
+});
+
+router.get('/about', (req, res) => {
+    res.render('./pages/about.ejs');
 });
 
 router.get('/login', (req, res) => {
@@ -28,7 +40,10 @@ router.get('/tools', (req, res) => {
 
 //ruta al panel que permite administrar la configuracion de INTERVALOS DE TIEMPO y CRUD USUARIOS. 
 router.get('/configuracion', (req, res) => {
-    res.res("estoy en la pestaña donde el Administrador puede configurar el intervalo de tiempo de funcionamiento del sistema y CRUD de usuarios");
+    // res.res("estoy en la pestaña donde el Administrador puede configurar el intervalo de tiempo de funcionamiento del sistema y CRUD de usuarios");
+    // res.res("estoy en la pestaña donde el Administrador puede agregar sensores, definir en que lugar estan conectados, que modelo de sensor es, etc");
+    res.render('./pages/configuration.ejs');
+
 });
 
 //ruta al monitoreo en tiempo real.

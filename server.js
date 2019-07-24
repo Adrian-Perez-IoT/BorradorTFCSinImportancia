@@ -1,6 +1,6 @@
-/* requires */
+/*==* LIBRARYS REQUIRES  *==*/
 
-//requiriendo acceso a la base de datos
+//requiriendo acceso a la ENTIDAD base de datos
 const db = require('./config/database');
 
 //requiriendo acceso al nodo zigbee controlador 
@@ -9,59 +9,58 @@ const coordinador = require('./helpers/comunicNodoZigbee');
 //requiriendo express para crear la logica que me permita la entrega de mis fucnionalidades. Tambien se usará para crear en un futuro una capa de seguridad adicional (ejemplo: accesos mediante IP, DSD)
 const express = require('express');
 const app = express();
-app.use(express.json()); //creo que no lo utilizo.  puedo borrarlo? 
+const port = 3100;
 
-const port = 4000;
-
+//Eliminar el requerimiento de esta libreria y reemplazarlo por el requerimiento de un archivo Entidad llamado Xbee.js (Este archivo contiene toda la logica perteneciente a las tramas del nodo zigbee)
 //requiriendo la libreria XBEE paraleer y escribir tramas de los nodos zigbee.  Creo que esto debe hacerse un un archivo .js aparte. y desde aqui solo requiero las unciones principales de ese archivo, pero con el nombre de la funcion mas general, como por ejemplo: 
 var xbee_api = require('xbee-api'); // 
 
+//Este requerimiento parece que esta bien por que se hace uso de una Entidad general, quien contiene propiedades y metodos caracteristicos propios
 const intruso = require('./app/api/models/intrusos');
 var dates = require('./helpers/dates');
 
-// import Vue from "vue"; // esta sintaxis es de ES6 y nodeJS no lo soporta, solamente soporta ES5.  Para usar ES6 se debe usar el Transpilador Babel
+
+
+// /*==* SETTINGS *==*/
+
+// // utilizando mi motor de plantillas: EJS
+// app.set('views', __dirname + '/views');
+// app.set('view engine', 'ejs');
+// // console.log(__dirname); // PARA SABER EL DIRECTORIO DONDE ESTA MI PROYECTO
+
+
+
+/*==* ROUTERS REQUIRES  *==*/
 
 //requiriendo rutas
 const routes = require('./routes/routes');
-const routesApi = require('./routes/routes-api');
+const routesApi = require('./routes/routes-api'); // ruta de ejemplo.  Mas adelante la puedo eliminar cuando ya aprenda bien como se pasan datos al html
 
 
-// db.mostrarBD();
 
-var trama = coordinador.simularTramas(); //simular trama debe ser una funcion de una entidad llamada "ModuloXbee".  Luego crear el archivo modulo-xbee.js y tambien un archivo (Entidad) llamado ConexionSerial.js
-console.log("+++++++++++++++++++++++++++     TRAMA SIMULADA     +++++++++++++++++++++++++++++++ \n Objetos:");
-console.log(trama);
-console.log("+++++++++++++++++++++++++++     ==============     +++++++++++++++++++++++++++++++ \n Objetos:");
+/*==* MIDDLEWARES *==*/
 
+//Midleware que me permite trabajar con objetos JSON
+app.use(express.json());
 
-/* settings */
-// utilizando mi motor de plantillas: EJS
-app.set('views', __dirname + '/views');
-app.set('view engine', 'ejs');
-// console.log(__dirname); // PARA SABER EL DIRECTORIO DONDE ESTA MI PROYECTO
-
-
-/* middlewares */
-// Para acceder a las rutas de monitoreoSSS hemos definido middleware para validar al usuario.
+// Para acceder a las rutas PRIVADAS (ejemplo tools, informes, etc) se definido un middleware que validará al usuario.
 function validateUser(req, res, next) {
     //esta ruta funcion la utilizaremos para recibir un boolean true en caso de que el usuario se haya logueado correctamente y asi poder: enviarle notificaciones.
     //llamamos a un metodo que fue creado en el archivo authentication.js
     //si devolvio error, entonces mostramos el mensaje con los detalles del error(contraseña erronea, usuario inexistente, etc) 
     //si no existen errores entonces, ¿añadimos al req.body.userId un ID de usuario decodificado?  Y por ultimo devolvemos next() 
-
 }
 
-//para servir mi carpeta publica (style bootstrap e imagenes)
-// app.use(express.static('public'));
-// app.use(express.static(__dirname + "/public"));
-// app.use(express.static(__dirname + "/public"));
+//middleware para servir archivos estaticos contenidos en mi carpeta publica (style, bootstrap, imagenes, etc)
 app.use(express.static('public'));
+// app.use(express.static(__dirname + "/public")); // no sirve esta ruta asi más adelante eliminaré esta linea!
 
 
 
-/* rutas */
+/*==* CALL ROUTES *==*/
+
 app.use(routes);
-app.use('/api', routesApi); // esto es solo un ejemplo.  Partiendo de aqui podemos rutear las APLICACIONES basicas de mi servidor (API), esto es: /USUARIO, /POST, /CONFIGURACION, etc 
+app.use('/api', routesApi); // esto es solo un ejemplo.  Partiendo de aqui podemos rutear las APLICACIONES basicas de un servidor (API), esto es: /USUARIO, /POST, /CONFIGURACION, etc 
 
 
 /** Desglosaremos la siguiente ruta de funcionalidad /monitorear (que se creo para probar las herramientas) en componentes mas pequeños, que contengan funciones con nombres descriptivos, entendibles y manejables. 
@@ -87,12 +86,10 @@ app.use('/api', routesApi); // esto es solo un ejemplo.  Partiendo de aqui podem
  *      Metodos: Create(), Read(), Update(), Delete()
  * */
 
-
-
 // Cuando el servidor backend reciba una peticion con la ruta a "http:localhost:4000/tools" se mostrará un tablero que ofrece las herramientas que el usuario (administrador) puede usar.
 // Habrá una herramienta llamada "monitoreo permanente" que llamará a una funcion que 
-// en un bucle infinito (o hasta que se de la orden de break) monitoree constantemente las tramas recibidas por el puerto serial. 
-//  y en caso de encontrar un sensor activo, esté llamará a la "RUTA QUE NOTIFICA"
+// en un bucle infinito (o hasta que se de la orden de break) atrape (en el puerto serial) constantemente las tramas recibidas y las analice si los sensores detectaron algo sospechoso.
+//  En caso de encontrar un sensor activado por un evento de riesgo, el backend ¿llamará a la "RUTA QUE NOTIFICA"? o ¿llamara al metodo Notificar de la entidad NOTIFICACION? (sin llamar a la ruta)???
 app.get('/tools', (req, res) => {
     var mytrama = coordinador.simularTramas(); // luego reemplazar esta funcion por la funcion que me obtiene tramas REALES constantemente desde mi puerto USB de la notebook
     var evento = coordinador.procesarDatos(mytrama); // envio la trama a una funcion para que procese si se debe o no debe activar la alarma 
@@ -113,33 +110,45 @@ app.get('/tools', (req, res) => {
 
 })
 
-
-
-
-//escuchar el puerto e inicializar el servidor
+//Inicializar el servidor con el puerto pre-configurado
 app.listen(port, (req, res) => {
     console.log(`El servidor ha sido inicializado: http://localhost:${port}`);
     console.log(`Listen in port ${port}`);
-
 });
 
-//esta ruta esta de mas? no se si podré borrarla sin que me ocaciones problemas (luego averiguarlo)
+//Esta ruta esta de mas? La puedo borrar sin ocacionar problemas? (averiguar)
 app.get('/favicon.ico', function(req, res) {
     res.sendStatus(204);
 });
 
 // Manejando errores HTTP 404 para solicitudes de contenido inexistente
 app.use(function(req, res, next) {
-    let err = new Error('Not Found');
+    let err = new Error('Error pagina no encontrada');
     err.status = 404;
     next(err);
 });
 
 // Manejo de errores, respuestas con codigo HTTP 500, HTTP 404
 app.use(function(err, req, res, next) {
-    console.log(err);
+    // console.log(err);  <<<< es necesario???
     if (err.status === 404)
         res.status(404).json({ message: " ERROR 404: Pagina no encontrada " });
     else
         res.status(500).json({ message: "ERROR 500: Error interno en el servidor!!" });
 });
+
+
+
+/**
+ * Luego borrar lo de abajo
+ */
+
+
+// import Vue from "vue"; // Vue.js usa sintaxis ES6 y nodeJS no lo soporta, solamente soporta ES5.  Para usar ES6 se debe usar el Transpilador Babel
+
+// db.mostrarBD();
+
+var trama = coordinador.simularTramas(); //simular trama debe ser una funcion de una entidad llamada "ModuloXbee".  Luego crear el archivo modulo-xbee.js y tambien un archivo (Entidad) llamado ConexionSerial.js
+console.log("+++++++++++++++++++++++++++     TRAMA SIMULADA     +++++++++++++++++++++++++++++++ \n Objetos:");
+console.log(trama);
+console.log("+++++++++++++++++++++++++++     ==============     +++++++++++++++++++++++++++++++ \n Objetos:");
