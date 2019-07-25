@@ -35,7 +35,7 @@ var dates = require('./helpers/dates');
 //requiriendo rutas
 const routes = require('./routes/routes');
 const routesApi = require('./routes/routes-api'); // ruta de ejemplo.  Mas adelante la puedo eliminar cuando ya aprenda bien como se pasan datos al html
-
+const routesTools = require('./routes/tools');
 
 
 /*==* MIDDLEWARES *==*/
@@ -61,6 +61,7 @@ app.use(express.static('public'));
 
 app.use(routes);
 app.use('/api', routesApi); // esto es solo un ejemplo.  Partiendo de aqui podemos rutear las APLICACIONES basicas de un servidor (API), esto es: /USUARIO, /POST, /CONFIGURACION, etc 
+app.use('/tools', routesTools);
 
 
 /** Desglosaremos la siguiente ruta de funcionalidad /monitorear (que se creo para probar las herramientas) en componentes mas pequeños, que contengan funciones con nombres descriptivos, entendibles y manejables. 
@@ -90,7 +91,7 @@ app.use('/api', routesApi); // esto es solo un ejemplo.  Partiendo de aqui podem
 // Habrá una herramienta llamada "monitoreo permanente" que llamará a una funcion que 
 // en un bucle infinito (o hasta que se de la orden de break) atrape (en el puerto serial) constantemente las tramas recibidas y las analice si los sensores detectaron algo sospechoso.
 //  En caso de encontrar un sensor activado por un evento de riesgo, el backend ¿llamará a la "RUTA QUE NOTIFICA"? o ¿llamara al metodo Notificar de la entidad NOTIFICACION? (sin llamar a la ruta)???
-app.get('/tools', (req, res) => {
+app.get('/222tools222', (req, res) => {
     var mytrama = coordinador.simularTramas(); // luego reemplazar esta funcion por la funcion que me obtiene tramas REALES constantemente desde mi puerto USB de la notebook
     var evento = coordinador.procesarDatos(mytrama); // envio la trama a una funcion para que procese si se debe o no debe activar la alarma 
     // si se detecto un evento de peligro entonces envio una notificacion al cliente.

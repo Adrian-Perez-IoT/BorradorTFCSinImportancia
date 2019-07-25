@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-// /*==* SETTINGS ------- ELIMINAR ESTE BLOQUE PORQUE NO TIENE SENTIDO*==*/
 
 // // utilizando mi motor de plantillas: EJS
 // const app = express();
@@ -31,13 +30,6 @@ router.get('/login', (req, res) => {
     res.render('login.ejs');
 });
 
-//ruta al panel de ¿Funcionalidades? donde podre manualmente empezar/detener el monitoreo(procesamiento de datos) y generar informes
-router.get('/tools', (req, res) => {
-    // res.send("en es ta pestaña (SPA) debo poner formularios, botonos y todos lo necesario para que el usario final pueda empezar/detener el monitoreo.  Y además generar informes de eventos");
-    res.render('tools.ejs');
-}); //¿Me convendria poner un archivo router-tools.js ?
-
-
 //ruta al panel que permite administrar la configuracion de INTERVALOS DE TIEMPO y CRUD USUARIOS. 
 router.get('/configuracion', (req, res) => {
     // res.res("estoy en la pestaña donde el Administrador puede configurar el intervalo de tiempo de funcionamiento del sistema y CRUD de usuarios");
@@ -46,8 +38,10 @@ router.get('/configuracion', (req, res) => {
 
 });
 
-//ruta al monitoreo en tiempo real.
-//ruta a la generacion de informes.
+
+
+
+//ruta a la generacion de informes.--> La llamada a la ruta de generacion de informes lo hago en el server.js
 
 /* RUTAS RELATIVAS DE LA LOGICA DE NEGOCIO*/
 // Cuando el servidor backend reciba una peticion con la ruta a obtener estado en linea de los sensores, 

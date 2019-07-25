@@ -1,0 +1,46 @@
+<!-- necesitare un SOCKET pra dibujar el cuerpo de la tabla en tiempo real -->
+<!doctype html>
+<html lang="es">
+
+<head>
+    <% include ../partials/head.ejs %>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <% include ../partials/header.ejs %>
+        </header>
+
+        <main>
+            <div class="jumbotron">
+                <h1>Monitor en tiempo real</h1>
+                <!-- <p>Aqui puedo ver 3 diferentes tipos de tablas, segun la cantidad de sensores. (1 tabla por sensor)</p> -->
+                <p>Sensor de gas: ON / OFF</p>
+                <p>Lugar: Cocina</p>
+                <% include ../partials/tableGas.ejs %>
+                    <br><br>
+                    <p>Sensor de movimiento: ON / OFF</p>
+                    <p>Lugar: Living</p>
+                    <% include ../partials/tableMovimiento.ejs %>
+                        <br><br>
+                        <p>Sensor de movimiento: ON/ OFF</p>
+                        <p>Lugar: Jardin Patio</p>
+                        <% include ../partials/tableMovimiento.ejs %>
+                            <br><br>
+                            <p>Sensor magnetico: ON / OFF</p>
+                            <p>Lugar: Puerta principal</p>
+                            <% include ../partials/tableMagnetico.ejs %>
+            </div>
+        </main>
+
+        <footer>
+            <% include ../partials/footer.ejs %>
+        </footer>
+    </div>
+    <script src="/libs-style/jquery.js"></script>
+    <script src="/libs-style/popper.js"></script>
+    <script src="/libs-style/bootstrap.js"></script>
+</body>
+
+</html>

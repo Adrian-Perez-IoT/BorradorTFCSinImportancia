@@ -7,6 +7,11 @@ router.get('/', (req, res) => {
     })
 });
 
-module.exports = router;
+router.get('/Funcion1', (req, res) => {
+    res.json({
+        miPrimerAPI: 'Funcion 1 funciona! '
+    })
+});
 
-//duda.  porque uso ruta raiz / ???
+
+module.exports = router;

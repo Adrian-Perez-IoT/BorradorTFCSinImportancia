@@ -1,0 +1,82 @@
+<!-- <h1>Aqui pongo botones para controlar todos mis sensores. ON / OFF </h1>
+<h2>tambien mostrar la ubicacion o lugar correspondiente de cada sensor. </h2>
+<h3>y un goton general de apagar todo el sistema de notificacion de alarma ¿o procesamiento de tramas?</h3> -->
+<!doctype html>
+<html lang="es">
+
+<head>
+    <% include ../partials/head.ejs %>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <% include ../partials/header.ejs %>
+        </header>
+
+        <main>
+            <div class="jumbotron">
+                <div class="card-deck">
+                    <div class="card">
+                        <img class="card-img-top" src="/img/sensor-pir.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Sensor de movimiento: Living</h5>
+                            <p class="card-text">Este es un sensor de movimiento ubicado en el Living</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Notificaciones</small><br>
+                            <button type="button" class="btn btn-md btn-primary" enabled>ON</button>
+                            <button type="button" class="btn btn-secondary btn-md" disabled>OFF</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="/img/sensor-pir.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Sensor de movimiento: Jardin del patio</h5>
+                            <p class="card-text">Este es un sensor de movimiento ubicado en Jardin del Patio</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Notificaciones</small><br>
+                            <button type="button" class="btn btn-secondary btn-md" disabled>ON</button>
+                            <button type="button" class="btn btn-md btn-primary" enabled>OFF</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="/img/sensor-mq2.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Sensor de gas: Cocina</h5>
+                            <p class="card-text">Este es un sensor de gas ubicado en la cocina.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Notificaciones</small><br>
+                            <button type="button" class="btn btn-md btn-primary" enabled>ON</button>
+                            <button type="button" class="btn btn-secondary btn-md" disabled>OFF</button>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img class="card-img-top" src="/img/sensor-magnetico.jpg" alt="Card image cap">
+                        <div class="card-body">
+                            <h5 class="card-title">Sensor magnetico: Puerta principal</h5>
+                            <p class="card-text">Este es un sensor magnetico ubicado en la puerta principa.</p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Notificaciones</small><br>
+                            <button type="button" class="btn btn-md btn-primary" enabled>ON</button>
+                            <button type="button" class="btn btn-secondary btn-md" disabled>OFF</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <footer>
+            <% include ../partials/footer.ejs %>
+        </footer>
+    </div>
+    <script src="/libs-style/jquery.js"></script>
+    <script src="/libs-style/popper.js"></script>
+    <script src="/libs-style/bootstrap.js"></script>
+</body>
+
+</html>
