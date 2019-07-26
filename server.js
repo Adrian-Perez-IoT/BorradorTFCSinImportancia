@@ -1,9 +1,15 @@
 /*==* LIBRARYS REQUIRES  *==*/
 
 //requiriendo acceso a la ENTIDAD base de datos
-const db = require('./config/database');
+const db = require('./config/database'); // los metodos principales de la BD seran: acceder(), create(), read(), update(), delete(), guardarEvento(), guardarNotificacion()
 
-//requiriendo acceso al nodo zigbee controlador 
+//requiriendo acceso al nodo zigbee coordinador 
+//La entidad en escencia deberia llamarse NodoZigbe en vez de comunicNodoZigbe.
+// Sus metodos principales serán: leerTrama(), simularTrama(tipoTrama), crearTrama(tipoTrama), 
+//y una entidad llamada NOTIFICACION, con propiedades: fecha, hora, titulo, cuerpo, destinatario.  
+// Metodos: notificarEvento(tokenDestinatario, tipoDeEvento), leerNotificacionesEnLaBD()
+//entidad llamada EVENTO, con propiedades: nombreEvento, fecha, hora, sensorAsociado, sensoresAsociados, 
+// metodos: guardarRegistroDelEventoEnLaBD(), leerEventosEnLaBD(intervaloFechas), bool:procesarTramas(tramas), tipoDeEvento:identificarEvento(trama),
 const coordinador = require('./helpers/comunicNodoZigbee');
 
 //requiriendo express para crear la logica que me permita la entrega de mis fucnionalidades. Tambien se usará para crear en un futuro una capa de seguridad adicional (ejemplo: accesos mediante IP, DSD)
@@ -79,7 +85,7 @@ app.use('/tools', routesTools);
  *      Metodos:
  * 
  *      Entidad: Usuario
- *      Pripiedades: nombre, dispositivoMovil, correoElectronico, numeroCelular, etc.
+ *      Pripiedades: nombre, dispositivoMovilAsociado/token, correoElectronico, numeroCelular, etc.
  *      Metodos:
  * 
  *      Entidad: DatabaseRealtime
