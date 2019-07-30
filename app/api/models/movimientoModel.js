@@ -1,3 +1,12 @@
+/**
+ * Este modelo contiene las siguientes funciones o metodos, como sea que se llame
+ * ¿crear()? //¿es un constructur de una clase o algo parecido? (asi como lo hace mongodb)
+ * guardar(data)
+ * leerTodo();
+ * buscarEnUnIntervalo(data);
+ * 
+ */
+
 // //librerias de acceso a mi documento o esquema o como se llame INTRUSOS
 const db = require('../../../config/database');
 
@@ -34,11 +43,6 @@ function writeData(timestamp, evento) {
 
     })
 }
-
-
-// function procesarDatos() {
-//     console.log("procesando datos en intrusos");
-//}
 
 
 

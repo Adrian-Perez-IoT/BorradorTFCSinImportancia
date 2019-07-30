@@ -2,10 +2,11 @@
 
 //requiriendo acceso a la ENTIDAD base de datos
 const db = require('./config/database'); // los metodos principales de la BD seran: acceder(), create(), read(), update(), delete(), guardarEvento(), guardarNotificacion()
+//aqui inicio la realtime database y la mantengo asi hasta que se cierre voluntariamente, igual que mongo db
 
 //requiriendo acceso al nodo zigbee coordinador 
-//La entidad en escencia deberia llamarse NodoZigbe en vez de comunicNodoZigbe.
-// Sus metodos principales serán: leerTrama(), simularTrama(tipoTrama), crearTrama(tipoTrama), 
+//La entidad en escencia deberia llamarse NodoZigbee en vez de comunicNodoZigbe.
+// Sus metodos principales serán: leerTramas(), simularTrama(tipoTrama), crearTrama(tipoTrama), 
 //y una entidad llamada NOTIFICACION, con propiedades: fecha, hora, titulo, cuerpo, destinatario.  
 // Metodos: notificarEvento(tokenDestinatario, tipoDeEvento), leerNotificacionesEnLaBD()
 //entidad llamada EVENTO, con propiedades: nombreEvento, fecha, hora, sensorAsociado, sensoresAsociados, 
@@ -19,10 +20,10 @@ const port = 3100;
 
 //Eliminar el requerimiento de esta libreria y reemplazarlo por el requerimiento de un archivo Entidad llamado Xbee.js (Este archivo contiene toda la logica perteneciente a las tramas del nodo zigbee)
 //requiriendo la libreria XBEE paraleer y escribir tramas de los nodos zigbee.  Creo que esto debe hacerse un un archivo .js aparte. y desde aqui solo requiero las unciones principales de ese archivo, pero con el nombre de la funcion mas general, como por ejemplo: 
-var xbee_api = require('xbee-api'); // 
+var xbee_api = require('xbee-api');
 
 //Este requerimiento parece que esta bien por que se hace uso de una Entidad general, quien contiene propiedades y metodos caracteristicos propios
-const intruso = require('./app/api/models/intrusos');
+const intruso = require('./app/api/models/movimientoModel');
 var dates = require('./helpers/dates');
 
 
@@ -72,7 +73,7 @@ app.use('/tools', routesTools);
 
 /** Desglosaremos la siguiente ruta de funcionalidad /monitorear (que se creo para probar las herramientas) en componentes mas pequeños, que contengan funciones con nombres descriptivos, entendibles y manejables. 
  *  Las entidades y funciones descubiertas en el desglose son:
- *      Entidad: MONITOR. 
+ *      Entidad: MONITOREAR. 
  *      Propiedades: intervalo de tiempo de funcionamiento, ¿sensores a funcionar asociados a la propiedad anterior de intervalo de tiempo?.  Trama? 
  *      Metodos: boolean iniciarMonitoreoPermanente(), boolean iniciarMonitoreoEnUnIntervaloDeTiempo(intervalo),  detenerMonitoreo()
  *      
@@ -88,20 +89,20 @@ app.use('/tools', routesTools);
  *      Pripiedades: nombre, dispositivoMovilAsociado/token, correoElectronico, numeroCelular, etc.
  *      Metodos:
  * 
- *      Entidad: DatabaseRealtime
+ *      Entidad: DatabaseRealtime-->ERROR: para crear un registro, cada entidad anterior debe tener los sguientes metodos. DatabaseRealtime no es un esquema, porque solo tenemos 1 instancia y nada mas
  *      Pripiedades: 
  *      Metodos: Create(), Read(), Update(), Delete()
  * */
 
 // Cuando el servidor backend reciba una peticion con la ruta a "http:localhost:4000/tools" se mostrará un tablero que ofrece las herramientas que el usuario (administrador) puede usar.
 // Habrá una herramienta llamada "monitoreo permanente" que llamará a una funcion que 
-// en un bucle infinito (o hasta que se de la orden de break) atrape (en el puerto serial) constantemente las tramas recibidas y las analice si los sensores detectaron algo sospechoso.
-//  En caso de encontrar un sensor activado por un evento de riesgo, el backend ¿llamará a la "RUTA QUE NOTIFICA"? o ¿llamara al metodo Notificar de la entidad NOTIFICACION? (sin llamar a la ruta)???
+// en un bucle infinito (o hasta que el usuario pulse STOP) atrape (en el puerto serial) constantemente las tramas recibidas y las analice para saber si los sensores detectaron algo sospechoso.
+//  En caso de encontrar un sensor activado por alguna causa o evento de riesgo(movimiento, gas alto, apertura de puerta), el backend ¿llamará a la "RUTA QUE NOTIFICA"?(Respuesta:NO!) o ¿llamara al metodo Notificar de la entidad NOTIFICACION? (sin llamar a la ruta)???(Respuesta:SI!)
 app.get('/222tools222', (req, res) => {
     var mytrama = coordinador.simularTramas(); // luego reemplazar esta funcion por la funcion que me obtiene tramas REALES constantemente desde mi puerto USB de la notebook
-    var evento = coordinador.procesarDatos(mytrama); // envio la trama a una funcion para que procese si se debe o no debe activar la alarma 
+    var evento = coordinador.procesarDatos(mytrama); //envio la trama a una funcion para que procese si se debe o no debe activar la alarma 
     // si se detecto un evento de peligro entonces envio una notificacion al cliente.
-    if (evento == "movimientoPIR" || evento == "openMAGNETICO" || evento == "dangerGAS") {
+    if (evento == "movimiento" || evento == "apertura" || evento == "gas") {
         console.log("se detecto una amenaza del tipo: ", evento.toString());
         //creo un nuevo registro en mi realtime database
         var timestamp = dates.actual();
@@ -155,7 +156,19 @@ app.use(function(err, req, res, next) {
 
 // db.mostrarBD();
 
-var trama = coordinador.simularTramas(); //simular trama debe ser una funcion de una entidad llamada "ModuloXbee".  Luego crear el archivo modulo-xbee.js y tambien un archivo (Entidad) llamado ConexionSerial.js
-console.log("+++++++++++++++++++++++++++     TRAMA SIMULADA     +++++++++++++++++++++++++++++++ \n Objetos:");
+let trama = coordinador.simularTramas(); //simular trama debe ser una funcion de una entidad llamada "ModuloXbee".  Luego crear el archivo modulo-xbee.js y tambien un archivo (Entidad) llamado ConexionSerial.js
+console.log("+++++++++++++++++++++++++++     TRAMA SIMULADA     +++++++++++++++++++++++++++++++ \n");
 console.log(trama);
-console.log("+++++++++++++++++++++++++++     ==============     +++++++++++++++++++++++++++++++ \n Objetos:");
+console.log("+++++++++++++++++++++++++++     ==============     +++++++++++++++++++++++++++++++ \n");
+
+
+let nodoCoordinador = require('./app/api/models/nodoZigbeeModel');
+
+//este data lo debo obtener de un formulario cuando el usuario entra a la ruta "/configuracion" que tiene la vista para el alta del sensor
+let data = {
+    "firmware": "parametro",
+    "macAddres": "parametro2",
+    "lugarUbicacion": "parametro3"
+};
+nodoCoordinador.createNode(data);
+console.log(nodoCoordinador.simuleFrame());

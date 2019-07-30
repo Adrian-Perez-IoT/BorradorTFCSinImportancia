@@ -1,3 +1,7 @@
+/**
+ * Aqui en cada ruta, en lugar de pasar la funcion flecha (req,res)=>{} debo pasar una funcion traida desde el controlador, por ejemplo producto.create, producto.save, producto.show, etc
+ */
+
 const express = require('express');
 const router = express.Router();
 

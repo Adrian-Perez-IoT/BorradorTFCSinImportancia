@@ -54,7 +54,7 @@ function mostrarTramas() {
 
 function simularTramas() {
     var raw_frame = Buffer.from([0x7E, 0x00, 0x12, 0x92, 0x00, 0x13, 0xA2, 0x00, 0x41, 0x6D, 0x73, 0xAF, 0xF9, 0x51, 0x01, 0x01, 0x00, 0x01, 0x00, 0x00, 0x01, 0x9A]);
-    //return JSON.stringify(xbeeAPI.parseFrame(raw_frame));
+    //return JSON.stringify(xbeeAPI.parseFrame(raw_frame)); //convierte el objeto json en una cadena? 
     return xbeeAPI.parseFrame(raw_frame);
 }
 
